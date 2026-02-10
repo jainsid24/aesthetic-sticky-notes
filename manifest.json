@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Aesthetic Sticky Notes",
+  "version": "1.0.0",
+  "description": "A beautiful minimal sticky notes experience for your new tab",
+  "chrome_url_overrides": { "newtab": "newtab.html" },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://geocoding-api.open-meteo.com/*",
+    "https://api.open-meteo.com/*",
+    "https://*.vercel.app/*","https://aesthetic-sticky-notes-3p9kek4vm-sid-jains-projects-07bd1b4f.vercel.app/*",
+    "https://images.unsplash.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.vercel.app https://aesthetic-sticky-notes-3p9kek4vm-sid-jains-projects-07bd1b4f.vercel.app https://api.open-meteo.com https://geocoding-api.open-meteo.com https://images.unsplash.com"
+  },
+  "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" }
+}

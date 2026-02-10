@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/unsplash-random.js", "use": "@vercel/node" },
+    { "src": "api/openrouter.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/unsplash-random", "dest": "/api/unsplash-random.js" },
+    { "src": "/api/openrouter", "dest": "/api/openrouter.js" }
+  ]
+}
