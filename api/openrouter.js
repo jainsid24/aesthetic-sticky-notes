@@ -21,7 +21,16 @@ export default async function handler(req, res) {
       },
       body,
     });
-    if (!upstream.ok) return res.status(upstream.status).json({ error: 'Upstream error' });
+    if (!upstream.ok) {
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+      const status = upstream.status;
+      let detail = 'Upstream error';
+      try {
+        const text = await upstream.text();
+        if (text) detail = text.length > 200 ? text.slice(0, 200) + '…' : text;
+      } catch (_) {}
+      return res.status(status).json({ error: detail });
+    }
     res.writeHead(200, {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': upstream.headers.get('content-type') || 'text/event-stream',

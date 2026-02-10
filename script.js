@@ -813,7 +813,8 @@ async function submitAiWriteInline(noteId, promptInput) {
     aiWriteAbortController = new AbortController();
 
     try {
-        const res = await fetch(proxyUrl.replace(/\/$/, '') + '/api/openrouter', {
+        const openrouterUrl = proxyUrl.replace(/\/$/, '') + '/api/openrouter?t=' + Date.now();
+        const res = await fetch(openrouterUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -825,7 +826,8 @@ async function submitAiWriteInline(noteId, promptInput) {
                 stream: true,
                 reasoning: { enabled: true }
             }),
-            signal: aiWriteAbortController.signal
+            signal: aiWriteAbortController.signal,
+            cache: 'no-store'
         });
 
         if (!res.ok) {
@@ -833,6 +835,11 @@ async function submitAiWriteInline(noteId, promptInput) {
             let hint = 'Check OPENROUTER_API_KEY in Vercel → Settings → Environment Variables, then redeploy.';
             if (status === 500) hint = 'Proxy not configured: add OPENROUTER_API_KEY in Vercel Environment Variables and redeploy.';
             if (status === 502) hint = 'Proxy error: check Vercel function logs.';
+            if (status === 401) {
+                let detail = '';
+                try { const j = await res.clone().json(); detail = (j && j.error) ? ': ' + String(j.error).slice(0, 120) : ''; } catch (_) {}
+                hint = 'Unauthorized (OpenRouter)' + detail + '. If AI works in another profile: clear this profile\'s cache for this page, or try Incognito with the extension loaded from the same folder.';
+            }
             throw new Error(status + ' ' + hint);
         }
 

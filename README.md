@@ -36,6 +36,12 @@ Or load the extension manually: open `chrome://extensions`, turn on **Developer 
 
 ---
 
+## AI / proxy (Vercel)
+
+The AI and background image features call a small proxy you host on Vercel (see `api/`). **Turn off Deployment Protection** for that project so the extension works in every Chrome profile: Vercel → your project → **Settings** → **Deployment Protection** → set to **Disabled** (or “Only Preview Deployments”). If protection is on, only profiles that have logged in to the deployment in a browser tab will get 200; others get 401 before your API runs.
+
+---
+
 ## Privacy
 
 Notes and settings are stored in your browser. The extension does not collect or sell your data. Optional features (weather, background images, AI) use the services described in the [Privacy Policy](PRIVACY_POLICY.md).
